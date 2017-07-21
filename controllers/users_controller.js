@@ -2,7 +2,6 @@ const User = require('../models/User')
 const Place = require('../models/Place')
 
 const request = require('request')
-const bcrypt = require('bcrypt')
 
 // function placeSearch(url, callback) {
 //   request(`${apiUrl}${qString}${apiKey}`, callback)
@@ -34,13 +33,29 @@ function register (req, res) {
   // })
 }
 
-function create (req, res) {
-  var salt = bcrypt.genSaltSync(10)
-  var hash = bcrypt.hashSync(req.body.user.password, salt)
+function create (req, res, next) {
+  // var salt = bcrypt.genSaltSync(10)
+  // var hash = bcrypt.hashSync(req.body.user.password, salt)
 
-  res.send({
-    reqbody: req.body,
-    hash: hash
+  var newUser = new User({
+    name: req.body.user.name,
+    email: req.body.user.email,
+    password: req.body.user.password
+  })
+
+  newUser.places.push(req.body.place.id)
+
+  newUser.save(function (err, createdUser) {
+    if (err) {
+      // req.flash()
+      next(err)
+    }
+
+    res.send({
+      reqbody: req.body,
+      newUser: newUser,
+      createdUser: createdUser
+    })
   })
 
   // User.create(req.body.user, function (err, newUser) {
