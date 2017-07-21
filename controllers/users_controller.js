@@ -34,9 +34,6 @@ function register (req, res) {
 }
 
 function create (req, res, next) {
-  // var salt = bcrypt.genSaltSync(10)
-  // var hash = bcrypt.hashSync(req.body.user.password, salt)
-
   var newUser = new User({
     name: req.body.user.name,
     email: req.body.user.email,
