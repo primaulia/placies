@@ -5,6 +5,9 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const express = require('express')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 
 // heroku addon way
@@ -34,11 +37,17 @@ app.engine('handlebars', exphbs({
   defaultLayout: 'main'
 }))
 app.set('view engine', 'handlebars')
-// listen to ajax request - json post
 app.use(bodyParser.json())
-
-// listen to form data submission
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(flash())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  store: new MongoStore({
+    url: process.env.MONGODB_URI
+  })
+}))
 
 // setup all files that the proj needs to require
 const placesRoute = require('./routes/placeRoute')
@@ -54,6 +63,7 @@ app.locals = {
 // NO REQUIRING AFTER THIS LINE
 // public paths
 app.get('/', function (req, res) {
+  req.flash('message', 'from the bottle')
   res.render('home')
 })
 

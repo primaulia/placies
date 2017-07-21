@@ -4,6 +4,12 @@ const request = require('request')
 
 const placesController = require('../controllers/places_controller')
 
+router.get('/flash', function (req, res) {
+  res.send({
+    'flash': req.flash('message')
+  })
+})
+
 router.get('/', function (req, res) {
   // const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
   // const qString = 'query=hotels in singapore'

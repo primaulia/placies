@@ -13,7 +13,8 @@ function register (req, res) {
     if (err) res.send(err)
 
     res.render('users/new', {
-      places: allPlaces
+      places: allPlaces,
+      flash: req.flash('errors')
     })
   })
 
@@ -44,8 +45,11 @@ function create (req, res, next) {
 
   newUser.save(function (err, createdUser) {
     if (err) {
-      // req.flash()
-      next(err)
+      // return res.send(err)
+      req.flash('errors', err.message)
+      return res.redirect('/users/new')
+
+      // next(err)
     }
 
     res.send({
