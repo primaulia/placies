@@ -9,7 +9,7 @@ $(function () {
   const $newUserForm = $('#newUserForm')
 
   const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
-  const apiKey = '&key=AIzaSyCxNyn5I2Me-fv147nnW5uqrRmhVrabebI'
+  const apiKey = `&key=${GOOGLE_PLACE_KEY}``
 
   $newUserForm.on('submit', function (e) {
     e.preventDefault()

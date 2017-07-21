@@ -10,28 +10,28 @@ const bcrypt = require('bcrypt')
 
 function register (req, res) {
   // getting all places from my list of places in the db
-  // Place.find({}, function (err, allPlaces) {
-  //   if (err) res.send(err)
-  //
-  //   res.render('users/new', {
-  //     places: allPlaces
-  //   })
-  // })
-
-  // getting all places from google place api
-  const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
-  const apiKey = `&key=${process.env.GOOGLE_PLACE_KEY}`
-  const qString = `query=hotels in new york`
-
-  request(`${apiUrl}${qString}${apiKey}`, function (err, response, body) {
+  Place.find({}, function (err, allPlaces) {
     if (err) res.send(err)
 
-    var data = JSON.parse(body)
-
     res.render('users/new', {
-      places: data.results
+      places: allPlaces
     })
   })
+
+  // getting all places from google place api
+  // const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
+  // const apiKey = `&key=${process.env.GOOGLE_PLACE_KEY}`
+  // const qString = `query=hotels in new york`
+  //
+  // request(`${apiUrl}${qString}${apiKey}`, function (err, response, body) {
+  //   if (err) res.send(err)
+  //
+  //   var data = JSON.parse(body)
+  //
+  //   res.render('users/new', {
+  //     places: data.results
+  //   })
+  // })
 }
 
 function create (req, res) {
